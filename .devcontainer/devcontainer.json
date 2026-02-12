@@ -3,17 +3,15 @@
   "image": "mcr.microsoft.com/devcontainers/typescript-node:1-22-bookworm",
   "features": {
     "ghcr.io/devcontainers/features/github-cli:1": {},
-    "ghcr.io/devcontainers/features/desktop-lite:1": {      
+    "ghcr.io/devcontainers/features/desktop-lite:1": {
       "webPort": "6080"
     }
   },
-  "runArgs": ["--add-host=host.docker.internal:host-gateway"],  
+  "runArgs": ["--add-host=host.docker.internal:host-gateway"],
   "forwardPorts": [6080],
   "customizations": {
     "vscode": {
-      "extensions": [
-        "ms-playwright.playwright"
-      ]
+      "extensions": ["ms-playwright.playwright"]
     }
   }
 }
