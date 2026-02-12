@@ -1,0 +1,19 @@
+# Dependencies
+node_modules/
+
+# Build outputs
+.next/
+out/
+build/
+coverage/
+
+# Auto-generated files
+src/client/
+next-env.d.ts
+
+# Package manager
+package-lock.json
+
+# IDE
+.idea/
+.vscode/
