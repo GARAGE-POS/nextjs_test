@@ -2,11 +2,18 @@ import { test, expect } from '@playwright/test'
 
 // Base URL for testing - adjust based on your local server
 const BASE_URL = process.env.BASE_URL || 'http://localhost:3000'
-const BASE_PATH = '/nextjs_test'
+// When set (e.g. /nextjs_test), app is served under basePath (production build). When unset, app is at root (dev).
+const BASE_PATH = process.env.E2E_APP_BASE_PATH || ''
 const FULL_URL = `${BASE_URL}${BASE_PATH}`
 
 test.describe('BasePath Functionality', () => {
   test.beforeEach(async ({ page }) => {
+    if (!BASE_PATH) {
+      test.skip(
+        true,
+        'BasePath tests require E2E_APP_BASE_PATH (e.g. /nextjs_test when serving production build)'
+      )
+    }
     // Navigate to the app with basePath
     await page.goto(FULL_URL)
   })
@@ -105,6 +112,12 @@ test.describe('BasePath Functionality', () => {
 
 test.describe('BasePath - Navigation', () => {
   test('should maintain basePath across navigation', async ({ page }) => {
+    if (!BASE_PATH) {
+      test.skip(
+        true,
+        'BasePath tests require E2E_APP_BASE_PATH (e.g. /nextjs_test when serving production build)'
+      )
+    }
     // Start at home
     await page.goto(FULL_URL)
 
