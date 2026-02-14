@@ -1,7 +1,11 @@
 import { getAssetPath } from '@/lib/helpers'
 import Image from 'next/image'
 
-export const AssetImage = (props: React.ComponentProps<typeof Image>) => {
+type AssetImageProps = Omit<React.ComponentProps<typeof Image>, 'alt'> & {
+  alt?: string
+}
+
+export const AssetImage = (props: AssetImageProps) => {
   const { src, ...rest } = props
 
   return (
