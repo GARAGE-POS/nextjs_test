@@ -1,23 +1,19 @@
 import type { NextConfig } from 'next'
 
 const isProd = process.env.NODE_ENV === 'production'
-const basePath = isProd ? '/nextjs_test' : ''
-
-const PROD_OPENWEATHER_KEY = '4c2b57758f396e0ff31a7a89fc82e0cc'
 
 const nextConfig: NextConfig = {
-  basePath: basePath ? '/nextjs_test' : '',
+  basePath: isProd ? process.env.NEXT_PUBLIC_BASE_PATH || '/nextjs_test' : '',
   output: 'export',
   images: {
     unoptimized: true,
   },
-  env: isProd
-    ? {
-        NEXT_PUBLIC_OPENWEATHER_KEY: PROD_OPENWEATHER_KEY,
-      }
-    : {
-        NEXT_PUBLIC_OPENWEATHER_KEY: process.env.NEXT_PUBLIC_OPENWEATHER_KEY,
-      },
+  env: {
+    NEXT_PUBLIC_OPENWEATHER_BASE:
+      process.env.NEXT_PUBLIC_OPENWEATHER_BASE || 'https://api.openweathermap.org/data/2.5',
+    NEXT_PUBLIC_OPENWEATHER_KEY: process.env.NEXT_PUBLIC_OPENWEATHER_KEY || '',
+    NEXT_PUBLIC_BASE_PATH: process.env.NEXT_PUBLIC_BASE_PATH || '',
+  },
 }
 
 export default nextConfig
