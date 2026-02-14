@@ -6,7 +6,7 @@ import axios from '../lib/axios'
 export default function useAxios<T = unknown>(path: string) {
   const [data, setData] = useState<T | null>(null)
   const [error, setError] = useState<string | null>(null)
-  const [loading, setLoading] = useState<boolean>(false)
+  const [loading, setLoading] = useState<boolean>(true)
   const controllerRef = useRef<AbortController | null>(null)
 
   const fetcher = useCallback(async (): Promise<T | null> => {

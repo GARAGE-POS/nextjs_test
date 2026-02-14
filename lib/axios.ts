@@ -2,8 +2,8 @@ import axios from 'axios'
 
 const baseURL =
   process.env.NEXT_PUBLIC_OPENWEATHER_BASE || 'https://api.openweathermap.org/data/2.5'
-const lat = process.env.NEXT_PUBLIC_OPENWEATHER_LAT
-const lon = process.env.NEXT_PUBLIC_OPENWEATHER_LON
+const lat = '46.6752957'
+const lon = '24.7135517'
 const appid = process.env.NEXT_PUBLIC_OPENWEATHER_KEY
 
 const instance = axios.create({ baseURL })

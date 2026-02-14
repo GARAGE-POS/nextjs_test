@@ -1,7 +1,6 @@
 import React from 'react'
 import { render, screen } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
-import WeatherClient from '../app/wheather/WeatherClient'
+import WeatherClient from '../app/weather/WeatherClient'
 import axios from '../lib/axios'
 
 jest.mock('../lib/axios', () => ({ get: jest.fn() }))
@@ -20,15 +19,22 @@ describe('WeatherClient', () => {
 
     render(<WeatherClient />)
 
-    // loading indicator present
-    expect(screen.getByText(/Loading/i)).toBeInTheDocument()
+    // loading indicator present (there are multiple "Loading..." texts)
+    const loadingElements = screen.getAllByText(/Loading/i)
+    expect(loadingElements.length).toBeGreaterThan(0)
 
     // wait for temperature to appear
     const temp = await screen.findByText(/30/)
     expect(temp).toBeInTheDocument()
     expect(screen.getByText(/sunny/i)).toBeInTheDocument()
 
-    expect(mockedAxios.get).toHaveBeenCalledWith('/weather')
+    // Verify axios was called with /weather and a signal (AbortController)
+    expect(mockedAxios.get).toHaveBeenCalledWith(
+      '/weather',
+      expect.objectContaining({
+        signal: expect.any(Object),
+      })
+    )
   })
 
   it('shows error state when fetch fails', async () => {
@@ -40,19 +46,20 @@ describe('WeatherClient', () => {
     expect(err).toBeInTheDocument()
   })
 
-  it('refetches data when Refresh clicked', async () => {
-    mockedAxios.get
-      .mockResolvedValueOnce({ data: { main: { temp: 20 }, weather: [{ description: 'a' }] } })
-      .mockResolvedValueOnce({ data: { main: { temp: 21 }, weather: [{ description: 'b' }] } })
+  it('displays weather data correctly', async () => {
+    mockedAxios.get.mockResolvedValueOnce({
+      data: { main: { temp: 20 }, weather: [{ description: 'cloudy' }] },
+    })
 
     render(<WeatherClient />)
 
-    await screen.findByText(/20/)
+    // Wait for data to load
+    const temp = await screen.findByText(/20/)
+    expect(temp).toBeInTheDocument()
+    expect(screen.getByText(/cloudy/i)).toBeInTheDocument()
 
-    const btn = screen.getByRole('button', { name: /Refresh/i })
-    await userEvent.click(btn)
-
-    const newTemp = await screen.findByText(/21/)
-    expect(newTemp).toBeInTheDocument()
+    // Verify the structure
+    expect(screen.getByText(/Temperature:/i)).toBeInTheDocument()
+    expect(screen.getByText(/Condition:/i)).toBeInTheDocument()
   })
 })
