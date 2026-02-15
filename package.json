@@ -5,6 +5,9 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "build:prod": "NEXT_PUBLIC_BASE_PATH=/nextjs_test NEXT_PUBLIC_OPENWEATHER_KEY=4c2b57758f396e0ff31a7a89fc82e0cc npm run build",
+    "build:serve": "npm run build:prod && npm run serve:prod",
+    "serve:prod": "mkdir -p prod/nextjs_test && cp -r out/* prod/nextjs_test/ && npx serve prod --no-clipboard",
     "start": "next start",
     "lint": "eslint",
     "format": "prettier --write .",
@@ -13,6 +16,10 @@
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
     "test:ts": "tsc --noEmit",
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui",
+    "test:e2e:debug": "playwright test --debug",
+    "test:build": "npm run build:prod && jest __tests__/build-output.test.ts",
     "prepare": "husky"
   },
   "dependencies": {
